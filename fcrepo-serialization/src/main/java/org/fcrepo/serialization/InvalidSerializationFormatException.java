@@ -17,7 +17,8 @@ package org.fcrepo.serialization;
 
 /**
  * Exception thrown when during deserialization it becomes obvious that the
- * InputStream in not in the expected format.
+ * InputStream is not in the expected format.
+ *
  * @author md5wz
  * @since November 2014
  */

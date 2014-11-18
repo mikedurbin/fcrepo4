@@ -218,7 +218,7 @@ public class FedoraExportIT extends AbstractResourceIT {
     @Test
     public void importNonJCRXMLShouldFail() throws IOException {
         final HttpPost importMethod = new HttpPost(serverAddress + "fcr:import");
-        importMethod.setEntity(new StringEntity("<test><this></this></this>"));
+        importMethod.setEntity(new StringEntity("<test><this></this></test>"));
         assertEquals("Should not have been able to import non JCR/XML.", 400, getStatus(importMethod));
     }
 

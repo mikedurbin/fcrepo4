@@ -89,8 +89,8 @@ public class JcrXmlSerializer extends BaseFedoraObjectSerializer {
             IOUtils.closeQuietly(fos);
         }
         validateJCRXML(temp);
-        try {
-            session.importXML(path, new TempFileInputStream(temp), ImportUUIDBehavior.IMPORT_UUID_COLLISION_THROW);
+        try (final InputStream tmpInputStream = new TempFileInputStream(temp)) {
+            session.importXML(path, tmpInputStream, ImportUUIDBehavior.IMPORT_UUID_COLLISION_THROW);
         } catch (UnsupportedOperationException | IllegalArgumentException e) {
             // These come from ModeShape when there's various problems in the formatting of the XML
             // that are not caught by JCRXMLValidatingInputStreamBridge.
@@ -100,8 +100,7 @@ public class JcrXmlSerializer extends BaseFedoraObjectSerializer {
     }
 
     private void validateJCRXML(final File file) throws InvalidSerializationFormatException, IOException {
-        final FileInputStream fis = new FileInputStream(file);
-        try {
+        try (final FileInputStream fis = new FileInputStream(file)) {
             final XMLEventReader reader = XMLInputFactory.newFactory().createXMLEventReader(fis);
             while (reader.hasNext()) {
                 final XMLEvent event = reader.nextEvent();
@@ -119,9 +118,7 @@ public class JcrXmlSerializer extends BaseFedoraObjectSerializer {
             reader.close();
         } catch (XMLStreamException e) {
             throw new InvalidSerializationFormatException("Unable to parse XML"
-                    + e.getMessage() != null ? " (" + e.getMessage() + ")." : ".");
-        } finally {
-            fis.close();
+                    + (e.getMessage() != null ? " (" + e.getMessage() + ")." : "."));
         }
     }
 

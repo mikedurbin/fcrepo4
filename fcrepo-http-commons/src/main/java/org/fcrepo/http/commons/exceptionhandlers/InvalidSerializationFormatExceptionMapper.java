@@ -31,6 +31,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *  HTTP error codes
  *
  * @author md5wz
+ * @since 11/17/14
  */
 @Provider
 public class InvalidSerializationFormatExceptionMapper implements
